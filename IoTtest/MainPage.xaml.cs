@@ -25,6 +25,7 @@ namespace IoTtest
         public MainPage()
         {
             this.InitializeComponent();
+            DataContext = new ModelView();
         }
     }
 }
