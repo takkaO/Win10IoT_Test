@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -25,7 +26,14 @@ namespace IoTtest
         public MainPage()
         {
             this.InitializeComponent();
-            DataContext = new ModelView();
+
+            // x86/x64でもリモート環境と同じWindowサイズで起動する
+            ApplicationView.PreferredLaunchViewSize = new Size { Width=800, Height=480};
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+
+            // データコンテキストにModelViewをセット
+            DataContext = new ModelView(this);
+            
         }
     }
 }

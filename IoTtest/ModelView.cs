@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.Xaml.Controls;
 
 namespace IoTtest
 {
@@ -15,18 +17,38 @@ namespace IoTtest
         public ICommand ChangeColorClicked { get; set; }
         private string[] colors = {"#FFFF0000", "#FF00FF00" };
         private int i;
+        private MainPage MainFrame;
 
-        public ModelView()
+        public ModelView(MainPage mainFrame)
         {
+            MainFrame = mainFrame;
             i = 0;
             CircleColor = colors[colors.Length - 1];
             ChangeColorClicked = new RelayCommand(ChangeColor);
-            //new MetroHelpers.MetroAssist().ScreenResolution;
-            Debug.WriteLine(Windows.Graphics.Display.DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel);
+            //write();
+            read();
+        }
+
+        private async void write()
+        {
+            Windows.Storage.StorageFolder localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+            Windows.Storage.StorageFile appFile = await localFolder.CreateFileAsync("appData.txt", Windows.Storage.CreationCollisionOption.ReplaceExisting);
+            await Windows.Storage.FileIO.WriteTextAsync(appFile, "Test String OK");
+            Debug.WriteLine("Write OK: {0}", localFolder.Path);
+        }
+
+        private async void read()
+        {
+            Windows.Storage.StorageFolder localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+            Windows.Storage.StorageFile appFile = await localFolder.GetFileAsync("appData.txt");
+            var txt = await Windows.Storage.FileIO.ReadTextAsync(appFile);
+            Debug.WriteLine(txt);
         }
 
         private void ChangeColor()
         {
+            MainFrame.Frame.Navigate(typeof(IoTtest.PageA));
+            /*
             Debug.WriteLine("Before {0}", CircleColor);
             CircleColor = colors[i];
             Debug.WriteLine("After  {0}", CircleColor);
@@ -35,6 +57,7 @@ namespace IoTtest
             {
                 i = 0;
             }
+            */
         }
         
 
