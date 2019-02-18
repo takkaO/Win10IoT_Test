@@ -21,7 +21,8 @@ namespace IoTtest
             i = 0;
             CircleColor = colors[colors.Length - 1];
             ChangeColorClicked = new RelayCommand(ChangeColor);
-            
+            //new MetroHelpers.MetroAssist().ScreenResolution;
+            Debug.WriteLine(Windows.Graphics.Display.DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel);
         }
 
         private void ChangeColor()
